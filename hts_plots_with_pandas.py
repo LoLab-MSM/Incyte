@@ -1240,7 +1240,7 @@ def run_example():
     old_viab_vs_celltox(d['F36P'], 'F36P', conc_list, '52793 JAK1', 96, control=('DMSO:2', 'N_A'))
 
 
-    # New functions.
+    # New functions
     new_diff_ct_same_drug(d, conc_list, '54329 BRD', 96,
                           ['HEL', 'OCI', 'F36P', 'Kas3', 'NB4', 'SKM', 'MO16', 'PL21'], 'lum',
                           control=('DMSO:2', 'N_A'))
