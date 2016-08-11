@@ -192,6 +192,7 @@ def build_dict_of_dicts(path_to_files, drug_dict, conc_list):
         cell_type = cell_info.split('-')[0]
         if not cell_type in d:
             d[cell_type] = {}
+        print(cell_info)
         assay = cell_info.split('-')[3]
         if not assay in d[cell_type]:
             d[cell_type][assay] = {}
@@ -354,9 +355,10 @@ def old_same_ct_diff_drug(ct_dict, cell_type, conc_list, drug_list, timepoint, a
     elif assay == 'Celltox':
         ax.set_ylabel('Cell toxicity (% of control)')
     ax.set_title(cell_type + ' ' + str(timepoint) + ' hr')
-    plt.savefig(('Different_drugs_vs_control_' + cell_type + '_' + str(timepoint) + '_' + assay + '.png'))
+    home = os.path.expanduser("~")
+    fig1 = os.path.join(home, ('Different_drugs_vs_control_' + cell_type + '_' + str(timepoint) + '_' + assay + '.png'))
+    plt.savefig(fig1)
     plt.close()
-
 
 def old_same_ct_drug_diff_time(ct_dict, cell_type, conc_list, drug, time_list, assay, control=('DMSO:2','N_A')):
     '''
@@ -477,7 +479,9 @@ def old_same_ct_drug_diff_time(ct_dict, cell_type, conc_list, drug, time_list, a
     elif assay == 'Celltox':
         ax.set_ylabel('Cell toxicity (% of control)')
     ax.set_title(cell_type + ' ' + drug + ' timecourse')
-    plt.savefig(('Timecourse_vs_control_' + cell_type + '_' + drug + '_' + assay + '.png'))
+    home = os.path.expanduser("~")
+    fig2 = os.path.join(home, ('Timecourse_vs_control_' + cell_type + '_' + drug + '_' + assay + '.png'))
+    plt.savefig(fig2)
     plt.close()
 
 
@@ -610,7 +614,7 @@ def new_cells_over_time(ct_dict, cell_type, conc_list, drug, time_list, assay, c
     # Get graph axes, shrink the plot's width a little, then put a legend outside the plot
     ax = plt.gca()
     box = ax.get_position()
-    ax.set_position([box.x0, box.y0, box.width * 0.85, box.height])
+    ax.set_position([box.x0, box.y0, box.width * 0.75, box.height])
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.xlim([round(min(m_e.index.get_level_values(0).values) - 1),
               round(max(m_e.index.get_level_values(0).values) + 1)])
@@ -620,7 +624,10 @@ def new_cells_over_time(ct_dict, cell_type, conc_list, drug, time_list, assay, c
     elif assay == 'Celltox':
         plt.ylabel('Cell death (normalized to cell # at time zero')
     plt.title(cell_type + ' ' + drug + ' over time')
-    plt.savefig((cell_type + '_' + drug + '_' + '_' + assay + '_timeseries.png'))
+
+    home = os.path.expanduser("~")
+    fig3 = os.path.join(home, (cell_type + '_' + drug + '_' + '_' + assay + '_timeseries.png'))
+    plt.savefig(fig3)
     plt.close()
 
 
@@ -753,9 +760,10 @@ def old_viab_vs_celltox(ct_dict, cell_type, conc_list, drug, timepoint, control=
     ax.set_xlabel('log([Cmpd]), M')
     ax.set_ylabel('Amount relative to control')
     ax.set_title(drug + ' (' + cell_type + ') ' + str(timepoint) + ' hr')
-    plt.savefig(('Viability_vs_Celltox_' + cell_type + '_' + drug + '_' + str(timepoint) + '.png'))
+    home = os.path.expanduser("~")
+    fig4 = os.path.join(home, ('Viability_vs_Celltox_' + cell_type + '_' + drug + '_' + str(timepoint) + '.png'))
+    plt.savefig(fig4)
     plt.close()
-
 
 def old_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, assay, control=('DMSO:2', 'N_A')):
     '''
@@ -883,7 +891,9 @@ def old_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
     elif assay == 'Celltox':
         ax.set_ylabel('Cell toxicity (% of control)')
     ax.set_title(drug+' '+str(timepoint)+' hr')
-    plt.savefig(('Drug_treatment_vs_control_'+drug+'_'+str(timepoint)+'_'+assay+'.png'))
+    home = os.path.expanduser("~")
+    fig5 = os.path.join(home, ('Drug_treatment_vs_control_'+drug+'_'+str(timepoint)+'_'+assay+'.png'))
+    plt.savefig(fig5)
     plt.close()
 
 
@@ -1043,7 +1053,7 @@ def new_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
     # Get graph axes, shrink the plot's width a little, then put a legend outside the plot
     ax = plt.gca()
     box = ax.get_position()
-    ax.set_position([box.x0, box.y0, box.width * 0.85, box.height])
+    ax.set_position([box.x0, box.y0, box.width * 0.75, box.height])
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.xlim([round(min(m_e.index.get_level_values(1).values)-.5),
               round(max(m_e.index.get_level_values(1).values)+.5)+.5])
@@ -1053,8 +1063,12 @@ def new_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
     elif assay == 'Celltox':
         plt.ylabel('Cell toxicity (% of control)')
     plt.title(drug+' '+str(timepoint)+' hr')
-    plt.savefig(('New_Drug_treatment_vs_control_'+drug+'_'+str(timepoint)+'_'+assay+'.png'))
-    plt.close()
+    # plt.savefig('New_Drug_treatment_vs_control_'+drug+'_'+str(timepoint)+'_'+assay+'.png')
+    home = os.path.expanduser("~")
+    fig = os.path.join(home, ('New_Drug_treatment_vs_control_' + drug + '_' + str(timepoint) + '_' + assay + '.png'))
+    plt.savefig(fig)
+    # print(fig)
+    # plt.close()
 
 
 def ll4(x,b,c,d,e):
