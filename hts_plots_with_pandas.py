@@ -355,8 +355,8 @@ def old_same_ct_diff_drug(ct_dict, cell_type, conc_list, drug_list, timepoint, a
     elif assay == 'Celltox':
         ax.set_ylabel('Cell toxicity (% of control)')
     ax.set_title(cell_type + ' ' + str(timepoint) + ' hr')
-    home = os.path.expanduser("~")
-    fig1 = os.path.join(home, ('Different_drugs_vs_control_' + cell_type + '_' + str(timepoint) + '_' + assay + '.png'))
+    # home = os.path.expanduser("~")
+    fig1 = 'Different_drugs_vs_control_' + cell_type + '_' + str(timepoint) + '_' + assay + '.png'
     plt.savefig(fig1)
     plt.close()
 
@@ -479,8 +479,7 @@ def old_same_ct_drug_diff_time(ct_dict, cell_type, conc_list, drug, time_list, a
     elif assay == 'Celltox':
         ax.set_ylabel('Cell toxicity (% of control)')
     ax.set_title(cell_type + ' ' + drug + ' timecourse')
-    home = os.path.expanduser("~")
-    fig2 = os.path.join(home, ('Timecourse_vs_control_' + cell_type + '_' + drug + '_' + assay + '.png'))
+    fig2 = 'Timecourse_vs_control_' + cell_type + '_' + drug + '_' + assay + '.png'
     plt.savefig(fig2)
     plt.close()
 
@@ -625,8 +624,7 @@ def new_cells_over_time(ct_dict, cell_type, conc_list, drug, time_list, assay, c
         plt.ylabel('Cell death (normalized to cell # at time zero')
     plt.title(cell_type + ' ' + drug + ' over time')
 
-    home = os.path.expanduser("~")
-    fig3 = os.path.join(home, (cell_type + '_' + drug + '_' + '_' + assay + '_timeseries.png'))
+    fig3 = cell_type + '_' + drug + '_' + '_' + assay + '_timeseries.png'
     plt.savefig(fig3)
     plt.close()
 
@@ -760,8 +758,7 @@ def old_viab_vs_celltox(ct_dict, cell_type, conc_list, drug, timepoint, control=
     ax.set_xlabel('log([Cmpd]), M')
     ax.set_ylabel('Amount relative to control')
     ax.set_title(drug + ' (' + cell_type + ') ' + str(timepoint) + ' hr')
-    home = os.path.expanduser("~")
-    fig4 = os.path.join(home, ('Viability_vs_Celltox_' + cell_type + '_' + drug + '_' + str(timepoint) + '.png'))
+    fig4 = 'Viability_vs_Celltox_' + cell_type + '_' + drug + '_' + str(timepoint) + '.png'
     plt.savefig(fig4)
     plt.close()
 
@@ -891,8 +888,8 @@ def old_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
     elif assay == 'Celltox':
         ax.set_ylabel('Cell toxicity (% of control)')
     ax.set_title(drug+' '+str(timepoint)+' hr')
-    home = os.path.expanduser("~")
-    fig5 = os.path.join(home, ('Drug_treatment_vs_control_'+drug+'_'+str(timepoint)+'_'+assay+'.png'))
+    # home = os.path.expanduser("~")
+    fig5 = 'Drug_treatment_vs_control_'+drug+'_'+str(timepoint)+'_'+assay+'.png'
     plt.savefig(fig5)
     plt.close()
 
@@ -1064,8 +1061,8 @@ def new_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
         plt.ylabel('Cell toxicity (% of control)')
     plt.title(drug+' '+str(timepoint)+' hr')
     # plt.savefig('New_Drug_treatment_vs_control_'+drug+'_'+str(timepoint)+'_'+assay+'.png')
-    home = os.path.expanduser("~")
-    fig = os.path.join(home, ('New_Drug_treatment_vs_control_' + drug + '_' + str(timepoint) + '_' + assay + '.png'))
+    # home = os.path.expanduser("~")
+    fig = 'New_Drug_treatment_vs_control_' + drug + '_' + str(timepoint) + '_' + assay + '.png'
     plt.savefig(fig)
     # print(fig)
     # plt.close()
@@ -1206,9 +1203,9 @@ def run_example():
              '4': ['JAK1 + 10nM ATRA', 'JAK1 + 100nM ATRA', 'JAK1 + 1uM ATRA', 'JAK1 + 10nM BRD', 'JAK1 + 30 nM BRD',
                    'JAK1 + 100nM BRD', 'BRD + 10nM Imatinib', 'BRD + 30nM Imatinib', 'BRD + 100nM Imatinib']}
     conc_list = [10000, 3000, 1000, 300, 100, 30, 10, 3, 1, .3] # these vals will be multipled by 10e-9 before plotting
-    home = os.path.expanduser("~")
-    path_to_plate_files = os.path.join(home,'hts_plate_files')
-    path_to_split_files = os.path.join(home,'hts_split_files')
+    # home = os.path.expanduser("~")
+    path_to_plate_files = 'hts_plate_files'
+    path_to_split_files = 'hts_split_files'
 
     ## Now all the functions I wrote are called. The first are leading up to the creation of 'd', the nested dict of all
     #  the plate data. Then, I recreated (or in one case made the same type of plot as) the plots in the HTS Data for
