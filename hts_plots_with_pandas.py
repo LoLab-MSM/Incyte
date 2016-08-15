@@ -988,7 +988,8 @@ def new_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
         # df.index.get_level_values() function returns the values in the specified index - the integers 0->whatever
         # specify your indices from left->right. DataFrame df has 3 indices - 'dilutions', 'log dilutions' and
         # 'replicates' (in that order) - so get_level_values(0) gives the values held in the 'dilutions' index
-        popt, pcov = opt.curve_fit(ll4, df.index.get_level_values(0).values, df[i], maxfev=2000)
+        popt, pcov = opt.curve_fit(ll4, df.index.get_level_values(0).values,
+                                   df[i], maxfev=1000000)
         conc_zero = ll4(0,*popt)
         conc_zeroes[i] = conc_zero
 
@@ -1031,7 +1032,8 @@ def new_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
 
     for i, col in zip(cell_types, sns.color_palette("husl", len(cell_types))):
         # will give the same fit as before because passing in the same x-vals (we're not including the "conc zero" val)
-        popt, pcov = opt.curve_fit(ll4, m_e.index.get_level_values(0).values, m_e[i],maxfev=2000)
+        popt, pcov = opt.curve_fit(ll4, m_e.index.get_level_values(
+            0).values, m_e[i],maxfev=1000000)
         ec50 = str(round(math.log10(popt[3]*10e-9),2)) #ec50 is the 4th constant solved by ll4()
         ic50 = "None"
         # Interpolating the points and using that to find the concentration value at cell count/tox = .5 (by shifting
@@ -1050,22 +1052,22 @@ def new_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
     # Get graph axes, shrink the plot's width a little, then put a legend outside the plot
     ax = plt.gca()
     box = ax.get_position()
-    ax.set_position([box.x0, box.y0, box.width * 0.75, box.height])
+    ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.xlim([round(min(m_e.index.get_level_values(1).values)-.5),
               round(max(m_e.index.get_level_values(1).values)+.5)+.5])
     plt.xlabel('log([Cmpd]), M')
     if assay == 'lum':
-        plt.ylabel('Viability (% of control)')
+        plt.ylabel('Viability (rel. to control)')
     elif assay == 'Celltox':
-        plt.ylabel('Cell toxicity (% of control)')
+        plt.ylabel('Cell toxicity (rel. to control)')
     plt.title(drug+' '+str(timepoint)+' hr')
     # plt.savefig('New_Drug_treatment_vs_control_'+drug+'_'+str(timepoint)+'_'+assay+'.png')
     # home = os.path.expanduser("~")
     fig = 'New_Drug_treatment_vs_control_' + drug + '_' + str(timepoint) + '_' + assay + '.png'
     plt.savefig(fig)
     # print(fig)
-    # plt.close()
+    plt.close()
 
 
 def ll4(x,b,c,d,e):
@@ -1252,9 +1254,34 @@ def run_example():
 
 
     # New functions
-    new_diff_ct_same_drug(d, conc_list, '54329 BRD', 96,
-                          ['HEL', 'OCI', 'F36P', 'Kas3', 'NB4', 'SKM', 'MO16', 'PL21'], 'lum',
-                          control=('DMSO:2', 'N_A'))
+    #all_cell_lines = set(['HEL', 'OCI', 'F36P', 'Kas3', 'NB4', 'SKM', 'MO13',
+    #                  'MO16', 'PL21'])
+    for assay in ['Celltox', 'lum']:
+        for time in [24,48,72,96]:
+            for drug in ['ABT-199',
+                         'BRD + 30nM Imatinib',
+                         'BRD + 10nM Imatinib',
+                         'JAK1 + 10nM BRD',
+                         'SAHA',
+                         'R-SER-30',
+                         'JAK1 + 10nM ATRA',
+                         'ATRA',
+                         'VU0661013-5 ("013)',
+                         'VU0807260-1 ("013 neg")',
+                         'JAK1 + 100nM ATRA',
+                         'JAK1 + 100nM BRD',
+                         'JAK1 + 30 nM BRD',
+                         'JAK1 + 1uM ATRA',
+                         'Daunorubicin',
+                         'Ruxolitinib',
+                         'Imatinib',
+                         'BRD + 100nM Imatinib']:
+                print(assay, time, drug)
+                cell_lines = [cl for cl in d.keys() if drug in d[cl][assay][
+                    time].keys()]
+                new_diff_ct_same_drug(d, conc_list, drug, time,
+                              cell_lines, assay,
+                              control=('DMSO:2', 'N_A'))
 
     new_cells_over_time(d['F36P'], 'F36P', conc_list, '52793 JAK1', [24,48,72,96], 'lum', control=('DMSO:2', 'N_A'))
 
