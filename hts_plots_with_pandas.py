@@ -863,7 +863,11 @@ def old_diff_ct_same_drug(total_dict, conc_list, drug, timepoint, cell_types, as
     #  function 'read_drugs_table()')
 
     for i in df:
-        df[i] = df[i] / np.mean(total_dict[i][assay][timepoint][control[0]][control[1]])
+        control_wells = [cw for cw in total_dict[i][assay][timepoint].keys()
+                         if cw.startswith(control[0])]
+        df[i] = df[i] / np.mean(sum([total_dict[i][assay][timepoint][
+                                        cw][control[1]] for cw in
+                                     control_wells], []))
 
     ## Group the cells by dilutions, because we're going to take the mean of the replicates and leave the dilutions as
     #  they are (to make sure we get the mean for each one). The calculate the mean and standard deviation, to use for
@@ -1279,9 +1283,10 @@ def run_example():
                 print(assay, time, drug)
                 cell_lines = [cl for cl in d.keys() if drug in d[cl][assay][
                     time].keys()]
-                new_diff_ct_same_drug(d, conc_list, drug, time,
-                              cell_lines, assay,
-                              control=('DMSO:2', 'N_A'))
+                old_diff_ct_same_drug(d, conc_list, drug, time, cell_lines,
+                                      assay, control=('DMSO', 'N_A'))
+                #new_diff_ct_same_drug(d, conc_list, drug, time,
+                #              cell_lines, assay)
 
     new_cells_over_time(d['F36P'], 'F36P', conc_list, '52793 JAK1', [24,48,72,96], 'lum', control=('DMSO:2', 'N_A'))
 
